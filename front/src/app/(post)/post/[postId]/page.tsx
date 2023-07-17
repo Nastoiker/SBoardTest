@@ -3,25 +3,28 @@ import {IPost} from "@/types/User.interface";
 import axios from "axios";
 import {api_url} from "@/domen.api";
 import {getPosts} from "@/actions/api";
-// import {Metadata} from "next";
+import {Metadata} from "next";
 
 interface PageProps {
     params: { postId: string },
 };
 export const dynamicParams = true;
-// export async function generateMetadata({ params }: { params: { postId: string } }): Promise<Metadata> {
-//     const page = await getPost(params.postId);
-//     return {
-//         title: page?.title,
-//     }
-// }
+ async function generateMetadata({ params }: { params: { postId: string } }): Promise<Metadata> {
+    const page = await getPost(params.postId);
+    return {
+        title: page?.title,
+    }
+}
 
  async  function getPost(postId: string): Promise<IPost | null>  {
-        const res = await axios.get(api_url + '/post/' + postId);
-        return  res.data;
-
+     try {
+         const res = await axios.get(api_url + '/post/' + postId);
+         return  res.data;
+     } catch {
+         return null;
+     }
 }
- async function getStaticProps(): Promise<{ postId: string }[]> {
+ async function generateStaticParams(): Promise<{ postId: string }[]> {
     const menu = await getPosts();
     return menu.map(page => ({ postId: page.id.toString() }));
 }

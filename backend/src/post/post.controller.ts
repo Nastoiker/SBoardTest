@@ -37,8 +37,9 @@ export class PostController {
 		const posts = await this.postService.findOne(id);
 		if (!posts) {
 			throw new NotFoundException(NOTFOUNDPOST);
+		} else {
+			return posts;
 		}
-		return posts;
 	}
 	@UsePipes(new ValidationPipe())
 	@UseGuards(JwtAuthGuard)
