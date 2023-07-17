@@ -32,12 +32,15 @@ const Posts: React.FC = () => {
             <PostContainer>
                 <h1>Посты</h1>
                 <StyledLink href='/posts/create'>Создать пост</StyledLink>
-                {
-                    data && data.map((p: IPost) => <div className={'bg-gray-400 p-5 mx-auto my-5'} key={p.id}>
-                        <h1 className={'font-bold'}>{p.title}</h1>
-                        <p>{p.content}</p>
-                    </div>)
-                }
+                <div className={"flex flex-wrap"}>
+                    {
+                        data && data.map((p: IPost) => <div onClick={() => router.push('/post/' + p.id)} className={'bg-gray-400 hover:scale-110  transition-all p-5 mx-auto my-5 w-[500px]'} key={p.id}>
+                            <h1 className={'font-bold'}>{p.title}</h1>
+                            <p>{p.content}</p>
+                        </div>)
+                    }
+                </div>
+
             </PostContainer>
         </div>
     );

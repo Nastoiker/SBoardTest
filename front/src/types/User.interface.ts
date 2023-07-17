@@ -15,4 +15,14 @@ export interface IPost {
   updatedAt: string
   title: string
   content: string
+  user?: User,
+}
+
+interface User {
+id: number
+createdAt: string
+updatedAt: string
+firstName: string
+lastName: string
+email: string
 }

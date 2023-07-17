@@ -20,10 +20,10 @@ const UserPage: React.FC = () => {
         <div>
             <h1>Пользователь</h1>
             <UserInfo {...user.data} />
-            <h1>Посты</h1>
+            <h1>Мои посты</h1>
             <div className={'flex flex-wrap '}>
                 {
-                    user.data?.posts.map((p: IPost) => <div className={'bg-gray-400 p-5 mx-auto my-5 break-words w-[500px]'} key={p.id}>
+                    user.data?.posts.map((p: IPost) => <div onClick={() => router.push('/post/' + p.id)} className={'bg-gray-400 hover:scale-110 transition-all p-5 mx-auto my-5 break-words w-[500px]'} key={p.id}>
                         <h1 className={'font-bold'}>{p.title}</h1>
                         <p>{p.content}</p>
                     </div>)
