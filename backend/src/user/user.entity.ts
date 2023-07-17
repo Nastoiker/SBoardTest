@@ -2,13 +2,15 @@ import {
 	Entity,
 	Column,
 	PrimaryGeneratedColumn,
-	ManyToOne,
+	OneToMany,
 	CreateDateColumn,
-	UpdateDateColumn,
+	UpdateDateColumn, Unique,
 } from 'typeorm';
-import { UserEntity } from '../user/user.model';
+import { Photo } from '../photo/photo.entity';
+import { Post } from '../post/post.entity';
+
 @Entity()
-export class Photo {
+export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
 	@CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
@@ -16,6 +18,19 @@ export class Photo {
 
 	@UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
 	updatedAt: Date;
+
 	@Column()
-	url: string;
+	firstName: string;
+
+	@Column()
+	lastName: string;
+
+	@Column()
+	@Unique(['email'])
+	email: string;
+
+	@Column()
+	password: string;
+	@OneToMany(() => Post, (post) => post.user)
+	posts: Post[];
 }

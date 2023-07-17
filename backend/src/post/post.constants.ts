@@ -1,0 +1,1 @@
+export const NOTFOUNDPOST = 'Пост не найден';

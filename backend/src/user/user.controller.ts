@@ -1,48 +1,43 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
-import { UsersService } from './users.service';
-import {User} from "@sentry/node";
+import { Controller, Get, Post, Body, Param, Delete, Put, NotFoundException } from '@nestjs/common';
+import { UserService } from './user.service';
+import { User } from './user.entity';
+import { NOTFOUNDUSER } from './user.constants';
+import { Post as PostUser } from '../post/post.entity';
+import { NOTFOUNDPOST } from '../post/post.constants';
+import { PostService } from '../post/post.service';
+import { IdValidationpipe } from '../pipes/idValidation.pipe';
 
-@Controller('users')
-export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+@Controller('user')
+export class UserController {
+	constructor(
+		private readonly userService: UserService,
+		private readonly postService: PostService,
+	) {}
 
-    //get all users
-    @Get()
-    async findAll(): Promise<User[]> {
-        return await this.usersService.findall();
-    }
+	@Get()
+	async findAll(): Promise<User[]> {
+		return await this.userService.findall();
+	}
+	@Get(':id')
+	async findPostsByUser(@Param('id', IdValidationpipe) id: number): Promise<PostUser[]> {
+		const posts = await this.postService.findPostsByUser(id);
+		if (!posts) {
+			throw new NotFoundException(NOTFOUNDPOST);
+		} else {
+			return posts;
+		}
+	}
 
-    //get one user
-    @Get(':id')
-    async findOne(@Param('id') id: number): Promise<User> {
-        const user = await this.usersService.findOne(id);
-        if (!user) {
-            throw new Error('User not found');
-        } else {
-            return user;
-        }
-    }
-
-    //create user
-    @Post()
-    async create(@Body() user: User): Promise<User> {
-        return await this.usersService.create(user);
-    }
-
-    //update user
-    @Put(':id')
-    async update(@Param('id') id: number, @Body() user: User): Promise<User> {
-        return this.usersService.update(id, user);
-    }
-
-    //delete user
-    @Delete(':id')
-    async delete(@Param('id') id: number): Promise<void> {
-        //handle the error if user not found
-        const user = await this.usersService.findOne(id);
-        if (!user) {
-            throw new Error('User not found');
-        }
-        return this.usersService.delete(id);
-    }
+	@Put(':id')
+	async update(@Param('id', IdValidationpipe) id: number, @Body() user: User): Promise<User> {
+		return this.userService.update(id, user);
+	}
+	@Delete(':id')
+	async delete(@Param('id', IdValidationpipe) id: number): Promise<void> {
+		const user = await this.userService.findOne(id);
+		if (!user) {
+			throw new NotFoundException(NOTFOUNDUSER);
+		}
+		return this.userService.delete(id);
+	}
 }

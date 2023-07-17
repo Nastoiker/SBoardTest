@@ -1,0 +1,1 @@
+export const NOTFOUNDUSER = 'Пользователь не найден';

@@ -3,12 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { UserController } from './user/user.controller';
-import { UserEntity } from './user/user.model';
+
 import { PhotoModule } from './photo/photo.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
+import { AuthModule } from "./auth/auth.module";
+import { PostModule } from './post/post.module';
 
 @Module({
 	imports: [
@@ -20,13 +19,16 @@ import { PassportModule } from '@nestjs/passport';
 			username: process.env.PG_USER,
 			password: process.env.PG_PASSWORD,
 			database: process.env.PG_DB,
+			autoLoadEntities: true,
 			entities: [__dirname + '/**/*.entity{.ts,.js}'],
 			synchronize: true,
 		}),
 		UserModule,
 		PhotoModule,
+		AuthModule,
+		PostModule,
 	],
-	controllers: [AppController, UserController],
+	controllers: [AppController],
 	providers: [AppService],
 })
 export class AppModule {}
