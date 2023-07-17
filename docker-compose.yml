@@ -3,7 +3,6 @@ version: '3.9'
 services:
   nestapp:
     container_name: nestapp
-#    image: francescoxx/nestapp:1.0.0
     build:
       context: ./backend
     ports:
