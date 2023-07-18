@@ -28,7 +28,7 @@ const PageRegistration = () => {
         watch,
     } = useForm<IRegister>({});
     const [error, setError] = useState<boolean>(false);
-    const [registrationFunc, isLoading] = useRegistrationMutation({});
+    const [registrationFunc, {isLoading, data}] = useRegistrationMutation({});
     const onSubmit = async (formData: IRegister) => {
         try {
             const { confirm_password, ...dataAuth} = formData;

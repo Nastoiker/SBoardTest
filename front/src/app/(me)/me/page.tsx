@@ -1,10 +1,11 @@
 'use client';
-
 import React, {useEffect, useLayoutEffect} from 'react';
 import UserInfo from "@/components/user";
 import {useRouter} from "next/navigation";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IPost} from "@/types/User.interface";
+import {WrapperPost} from "@/app/(post)/components/Wrapper/Wrapper";
+import {UserPost} from "@/app/(me)/components/UserPost/UserPost";
 
 const UserPage: React.FC = () => {
 
@@ -21,14 +22,11 @@ const UserPage: React.FC = () => {
             <h1>Пользователь</h1>
             <UserInfo {...user.data} />
             <h1>Мои посты</h1>
-            <div className={'flex flex-wrap '}>
+            <WrapperPost>
                 {
-                    user.data?.posts.map((p: IPost) => <div onClick={() => router.push('/post/' + p.id)} className={'bg-gray-400 hover:scale-110 transition-all p-5 mx-auto my-5 break-words w-[500px]'} key={p.id}>
-                        <h1 className={'font-bold'}>{p.title}</h1>
-                        <p>{p.content}</p>
-                    </div>)
+                    user.data?.posts.map((p: IPost) => <UserPost onDelete={()=> user.refetch()} key={p.id} post={p} />)
                 }
-            </div>
+            </WrapperPost>
 
         </div>
     );

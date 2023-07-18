@@ -14,8 +14,9 @@ export const SBOARDApi = createApi({
       return headers
     },
   }),
+  tagTypes: ['Posts'],
   endpoints: (builder) => ({
-    getPost: builder.query({
+    getPosts: builder.query({
       query: () => ({
         url: "/",
         method: "get",
@@ -30,6 +31,28 @@ export const SBOARDApi = createApi({
           'Content-Type': 'application/json',
         }
       }),
+      invalidatesTags: ['Posts'],
+    }),
+    delPost: builder.mutation({
+      query: (id) => ({
+        url: "/" + id,
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }),
+      invalidatesTags: ['Posts'],
+    }),
+    updatePost: builder.mutation({
+      query: (updatePost) => ({
+        url: "/" + updatePost.id,
+        method: "PUT",
+        body: {...updatePost.value},
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }),
+      invalidatesTags: ['Posts'],
     }),
     getPostOne: builder.query({
       query: (userId: number) => ({
@@ -42,4 +65,4 @@ export const SBOARDApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPostQuery, useGetPostOneQuery, useCreatePostMutation } = SBOARDApi;
+export const { useGetPostsQuery, useGetPostOneQuery, useCreatePostMutation, useDelPostMutation, useUpdatePostMutation } = SBOARDApi;

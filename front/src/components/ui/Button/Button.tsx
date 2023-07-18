@@ -1,15 +1,16 @@
-import { FC, ReactNode } from "react";
+import {FC, forwardRef, ReactNode} from "react";
 import cn from "classnames";
 import styles from "./button.module.css";
 // import BasketIcon from './basket.svg';
 import { buttonProps } from "./button.props";
-export const Button = ({
+export const Button = forwardRef<HTMLButtonElement, buttonProps>(({
   children,
   className,
   appearance = "green",
   ...props
 }: buttonProps) => {
-  return (
+    Button.displayName = "Button"
+    return (
     <button
       className={cn(className, [
         {
@@ -22,4 +23,4 @@ export const Button = ({
       {children}{" "}
     </button>
   );
-};
+});

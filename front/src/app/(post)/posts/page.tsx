@@ -5,42 +5,26 @@ import {PostContainer, PostItem} from "@/components/posts";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {StyledLink} from "@/components/layout";
-import {useGetPostQuery} from "@/stores/slices/api";
+import {useGetPostsQuery} from "@/stores/slices/api";
 import {IPost} from "@/types/User.interface";
+import {WrapperPost} from "@/app/(post)/components/Wrapper/Wrapper";
+import {Post} from "@/app/(post)/components/Post/Post";
 
 
 const Posts: React.FC = () => {
     const router = useRouter();
-    const {data, error, isLoading} = useGetPostQuery({});
-
-    const edtPost = (postId: string) => {
-        return () => {
-            router.push(`/posts/${postId}/update`)
-        }
-    }
-
-    const delPost = (postId: string, token: string) => {
-        return async () => {
-            // @ts-ignore
-            setPosts(posts?.filter((post) => post.id !== postId))
-        }
-    }
-
+    const {data, error, isLoading} = useGetPostsQuery({});
     return (
         <div>
 
             <PostContainer>
                 <h1>Посты</h1>
                 <StyledLink href='/posts/create'>Создать пост</StyledLink>
-                <div className={"flex flex-wrap"}>
+                <WrapperPost>
                     {
-                        data && data.map((p: IPost) => <div onClick={() => router.push('/post/' + p.id)} className={'bg-gray-400 hover:scale-110  transition-all p-5 mx-auto my-5 w-[500px]'} key={p.id}>
-                            <h1 className={'font-bold'}>{p.title}</h1>
-                            <p>{p.content}</p>
-                        </div>)
+                        data && data.map((p: IPost) => <Post key={p.id} post={p} />)
                     }
-                </div>
-
+                </WrapperPost>
             </PostContainer>
         </div>
     );
