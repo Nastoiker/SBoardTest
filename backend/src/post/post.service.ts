@@ -38,8 +38,8 @@ export class PostService {
 		return await this.postRepository.save(newUser);
 	}
 
-	async update(id: number, user: PostUser): Promise<PostUser> {
-		await this.postRepository.update(id, user);
+	async update(id: number, post: PostUser): Promise<PostUser> {
+		await this.postRepository.update(id, post);
 		return await this.postRepository.findOne({ where: { id } });
 	}
 
